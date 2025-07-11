@@ -1,9 +1,9 @@
-use gtk4::gdk::Key;
-use gtk4::{
-    prelude::*, EventControllerKey, EventControllerScroll, EventControllerScrollFlags, Inhibit,
-    Label,
+use gtk::gdk::Key;
+use gtk::glib::Propagation;
+use gtk::{
+    prelude::*, EventControllerKey, EventControllerScroll, EventControllerScrollFlags, Label,
 };
-use gtk4::{Application, ApplicationWindow};
+use gtk::{Application, ApplicationWindow};
 
 const APP_ID: &str = "dev.nerdworks.Spacer";
 
@@ -45,10 +45,10 @@ fn build_ui(app: &Application) {
         };
 
         win.set_opacity(opacity);
-        Inhibit(true)
+        Propagation::Stop
     });
 
-    window.add_controller(&scroll);
+    window.add_controller(scroll);
 
     let key = EventControllerKey::new();
     let win = window.clone();
@@ -56,9 +56,9 @@ fn build_ui(app: &Application) {
         if key == Key::Escape {
             win.close();
         }
-        Inhibit(false)
+        Propagation::Stop
     });
-    window.add_controller(&key);
+    window.add_controller(key);
 
     window.present();
 }
